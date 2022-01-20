@@ -6,6 +6,8 @@ Quick and dirty script sequencer. Create function trees, add async/requestAnimat
 
 Usage:
 ```
+import {Sequencer} from 'anothersequencer'
+
 let sequencer = new Sequencer();
 
 //simple
