@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brainsatplay/StateManager.git"
+    "url": "git+https://github.com/brainsatplay/Sequencer.js.git"
   },
   "keywords": [
     "sequencer",
@@ -21,7 +21,7 @@
     "anotherstatemanager": "1.0.4"
   },
   "bugs": {
-    "url": "https://github.com/brainsatplay/StateManager/issues"
+    "url": "https://github.com/brainsatplay/Sequencer.js/issues"
   },
-  "homepage": "https://github.com/brainsatplay/StateManager#readme"
+  "homepage": "https://github.com/brainsatplay/Sequencer.js#readme"
 }
