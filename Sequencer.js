@@ -115,8 +115,8 @@ export class Sequencer {
     async runSequenceLayer(layer=[],previousResult) {
         layer.forEach((o) => {
             if(typeof o === 'function') {
-                if(o.constructor.name == 'AsyncFunction') await o(previousResult);
-                else result = o(previousResult); //can just shove functions into the sequencer
+                if(o.constructor.name == 'AsyncFunction') previousResult = await o(previousResult); //if the functions are in a basic sequence this passes results along
+                else previousResult = o(previousResult); //can just shove functions into the sequencer
             
             }
             else if(o.delay) { 
