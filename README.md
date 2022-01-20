@@ -20,13 +20,13 @@ let sequence2 = [{
     tag:'begin'
     operation:(input)=>{}, //the callback
     next:[{
+        delay:100 //milisecond delay before this operation is called
         operation:(input)=>{}, //next callback
-        delay:100
         next:[
             {
                 tag:'anotheroperation' //tags let you subscribe to these results
-                operation:async (input)=>{}, //etc.
                 delay:100,
+                operation:async (input)=>{}, //etc
                 async:true //can toggle if the operations should run async, or use frame:true to use requestAnimationFrame
             }, 
             {
