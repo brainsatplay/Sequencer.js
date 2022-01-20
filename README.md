@@ -1,0 +1,87 @@
+## anothersequencer
+
+Quick and dirty script sequencer. Create function trees, add async/requestAnimationFrame or delays, and subscribe to tagged outputs in the trees.
+
+`npm i anothersequencer`
+
+Usage:
+```
+let sequencer = new Sequencer();
+
+let sequence1 = [{
+    tag:'begin'
+    operation:(input)=>{}, //the callback
+    next:[{
+        operation:(input)=>{}, //next callback
+        delay:100
+        next:[
+            {
+                tag:'anotheroperation' //tags let you subscribe to these results
+                operation:async (input)=>{}, //etc.
+                delay:100,
+                async:true //can toggle if the operations should run async, or use frame:true to use requestAnimationFrame
+            }, 
+            {
+                operation:async (input)=>{},
+                frame:true, //uses requestAnimationFrame which is a special async function for frame and context-limited calls
+                //next:[{...}]
+            }
+        ]
+    }]
+}];
+
+let sequence2 = [
+    first(){console.log('1');},
+    second(){console.log('2');},
+    async () => {console.log('3')} //yeah whatever
+];
+
+let onResult = (input) => {
+    console.log(input);
+}
+
+sequencer.addSequence('test1',sequence1);
+
+sequencer.addSequence('test2',sequence2);
+
+let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a triggered function on result
+
+//sequencer.unsubscribeFromOperation('anotheroperation',sub); //leave sub blank to remove all triggers. You could even, say, subscribe one sequence to another tagged sequence even, I don't know why but sure it's cool.
+
+```
+
+Other functions less obvious to use:
+
+```
+sequencer.getSequence(
+    name,
+    layer //optional
+);
+```
+```
+sequencer.appendSequence(
+     name, //name of sequence
+    layer, //layer 2 is the second layer, etc. leave blank to append on first layer
+    setting={ //object or function, functions cannot have more layers added
+    //operation = (result) => {} //callback for the sequence, takes the previous result
+    //delay:undefined, //set to a millisecond value
+    //async:undefined //set async:true or frame:true depending on if you want normal async or frame-timed async (which also won't run if you are out of the tab)
+    }, 
+    index //if you are appending to .next of an operation in a particular sequence layer you can use  this. Leave blank to just add the setting to the specified layer instead
+)
+```
+```
+sequencer.removeSequence(
+    name,
+    layer, //optional
+    index //optional
+);
+```
+```
+//this is used recursively by runSequence otherwise to iterate a layer
+sequencer.runSequenceLayer(
+    layer=[],
+    previousResult
+)
+```
+
