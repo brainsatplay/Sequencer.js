@@ -105,6 +105,7 @@ export class Sequencer {
                 while(i < layer) {
                     if(!nextlayer.next) break;
                     nextlayer = nextlayer.next;
+                    i++;
                 }
                 return nextlayer;
             }
