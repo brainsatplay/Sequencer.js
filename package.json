@@ -1,6 +1,6 @@
 {
   "name": "anothersequencer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Simple script tree sequencer in javascript. Allows creating fairly complex trees of sync/async functions or requestAnimationFrame functions with optional delays, as well as subscribing to particular outputs in the tree at any time.",
   "main": "sequencer.js",
   "type":"module",
@@ -18,7 +18,7 @@
   "author": "Joshua Brewster and Garrett Flynn",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "statemanager": "1.0.4"
+    "anotherstatemanager": "1.0.4"
   },
   "bugs": {
     "url": "https://github.com/brainsatplay/StateManager/issues"

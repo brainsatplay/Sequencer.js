@@ -27,6 +27,8 @@
 //     }
 // }
 
+import {StateManager} from 'anotherstatemanager'
+
 export class Sequencer {
     constructor() {
         this.sequences = new Map();
