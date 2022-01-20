@@ -1,4 +1,4 @@
-## anothersequencer
+## Javascript function sequencing
 
 Quick and dirty script sequencer. Create function trees, add async/requestAnimationFrame or delays, and subscribe to tagged outputs in the trees.
 
