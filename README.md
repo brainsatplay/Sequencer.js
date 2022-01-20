@@ -48,6 +48,8 @@ sequencer.addSequence('test1',sequence1);
 
 sequencer.addSequence('test2',sequence2);
 
+sequencer.runSequence('test1'); //can also tell it what layer to run from if there are multiple
+
 let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a triggered function on result
 
 //sequencer.unsubscribeFromOperation('anotheroperation',sub); //leave sub blank to remove all triggers. You could even, say, subscribe one sequence to another tagged sequence even, I don't know why but sure it's cool.
