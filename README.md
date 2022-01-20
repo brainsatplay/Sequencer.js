@@ -8,7 +8,15 @@ Usage:
 ```
 let sequencer = new Sequencer();
 
-let sequence1 = [{
+//simple
+let sequence1 = [
+    first(){console.log('1');},
+    second(){console.log('2');},
+    async () => {console.log('3')} //yeah whatever
+];
+
+//complex
+let sequence2 = [{
     tag:'begin'
     operation:(input)=>{}, //the callback
     next:[{
@@ -29,12 +37,6 @@ let sequence1 = [{
         ]
     }]
 }];
-
-let sequence2 = [
-    first(){console.log('1');},
-    second(){console.log('2');},
-    async () => {console.log('3')} //yeah whatever
-];
 
 let onResult = (input) => {
     console.log(input);
