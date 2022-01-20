@@ -10,9 +10,9 @@ let sequencer = new Sequencer();
 
 //simple
 let sequence1 = [
-    first(){console.log('1');},
-    second(){console.log('2');},
-    async () => {console.log('3')} //yeah whatever
+    first(){console.log('1'); return 2;},
+    second(input){console.log(input); return 3;}, //should log "2"
+    async (input) => {console.log(input)} //yeah whatever
 ];
 
 //complex
