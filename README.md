@@ -7,6 +7,10 @@ Quick and dirty script sequencer. Create function trees, add async/requestAnimat
 Usage:
 ```
 import {Sequencer} from 'anothersequencer'
+//import {Sequencer} from './Sequencer.js'
+//in HTML: <script type='module' src='./Sequencer.js></script>
+//or for lazy: 
+//document.head.insertAdjacentHTML(`<script type='module' src='./Sequencer.js></script>`)
 
 let sequencer = new Sequencer();
 
@@ -19,14 +23,14 @@ let sequence1 = [
 
 //complex
 let sequence2 = [{
-    tag:'begin'
+    tag:'begin',
     operation:(input)=>{}, //the callback
     next:[{
-        delay:100 //milisecond delay before this operation is called
+        delay:100, //milisecond delay before this operation is called
         operation:(input)=>{}, //next callback
         next:[
             {
-                tag:'anotheroperation' //tags let you subscribe to these results
+                tag:'anotheroperation', //tags let you subscribe to these results
                 delay:100,
                 operation:async (input)=>{}, //etc
                 async:true //can toggle if the operations should run async, or use frame:true to use requestAnimationFrame
@@ -51,8 +55,9 @@ sequencer.addSequence('test2',sequence2);
 sequencer.runSequence('test1'); //can also tell it what layer to run from if there are multiple
 
 let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a triggered function on result
+//You could even, say, subscribe one tagged sequence to another tagged sequence.
 
-//sequencer.unsubscribeFromOperation('anotheroperation',sub); //leave sub blank to remove all triggers. You could even, say, subscribe one sequence to another tagged sequence even, I don't know why but sure it's cool.
+//sequencer.unsubscribeFromOperation('anotheroperation',sub); //leave sub blank to remove all triggers. 
 
 ```
 
