@@ -1,7 +1,7 @@
 //Simple script sequencer
 // Joshua Brewster AGPL v3.0
 
-// let sequence = {
+// sequencer.sequences = {
 //     a:[{
 //         operation:(input)=>{},
 //         next:[{
