@@ -177,6 +177,16 @@ export class Sequencer {
     async runSequenceLayer(layer,previousResult) {
 
         let run = async (o,prev,tick=1) => {
+
+            //supports different shorthand
+            if(o.operation) true;
+            else if(o.op) o.operation = o.op;
+            else if (o.o) o.operation = o.o;
+            else if (o.f) o.operation = o.f;
+            else if (o.fn) o.operaiion = o.fn; 
+            else if (o.callback) o.operation = o.callback;
+            else return prev;
+
             let result = await o.operation(prev);
             if(o.tag) this.state.setState(o.tag,result);
             if(typeof o.repeat === 'number') { //repeats a call with the first result

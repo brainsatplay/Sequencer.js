@@ -29,7 +29,7 @@ sequencer.runSequence('a', 0); //or .run
 
 //complex
 let sequence2 = { //create a sequence object or array, can mix and match for each layer as well
-    operation:(input)=>{
+    operation:(input)=>{ //.operation, .op, .f, .fn, .callback all work
         console.log('b',input);
         return 5;
     },
