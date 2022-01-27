@@ -43,6 +43,7 @@ let sequence2 = { //create a sequence object or array, can mix and match for eac
             next:async (input)=>{console.log('b',input);} //can end with a function
         },
         {
+            tag:'repeater'
             delay:1000, //ms delay for this call
             operation:(input)=>{
                 console.log('b',input);
@@ -61,10 +62,10 @@ sequencer.runSequence('b',4);
 
 ```js
 
-let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //or .subscribe //adds a triggered function on result
+let sub = sequencer.subscribeToOperation('repeater',onResult); //or .subscribe //adds a triggered function on result
 //You could even, say, subscribe one tagged sequence to another tagged sequence.
 
-sequencer.unsubscribeFromOperation('anotheroperation',sub); //or .unsubscribe //leave sub blank to remove all triggers. 
+sequencer.unsubscribeFromOperation('repeater',sub); //or .unsubscribe //leave sub blank to remove all triggers. 
 
 ```
 
