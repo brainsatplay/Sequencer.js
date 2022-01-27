@@ -82,7 +82,7 @@ sequencer.appendSequence( // or .append
      name, //name of sequence
     layer, //layer 2 is the second layer, etc. leave blank to append on first layer
     setting={ //object or function, functions cannot have more layers added
-    //operation = (result) => {} //callback for the sequence, takes the previous result
+    //operation:(result) => {} //callback for the sequence, takes the previous result
     //delay:undefined, //set to a millisecond value
     //async:undefined //set async:true or frame:true depending on if you want normal async or frame-timed async (which also won't run if you are out of the tab)
     }, 
