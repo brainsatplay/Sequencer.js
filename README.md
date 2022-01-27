@@ -48,6 +48,7 @@ let sequence2 = { //create a sequence object or array, can mix and match for eac
                 console.log('b',input);
                 return 7;
             },
+            repeat:3, //repeat before moving on, 'recursive' does the same but passes the repeater output back to itself rather than the parent input
             next:'a' //or can end with another sequence tag
         }
     ]

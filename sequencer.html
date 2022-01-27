@@ -150,6 +150,59 @@ class Sequencer {
     get = this.getSequence;
 
     async runSequenceLayer(layer,previousResult) {
+
+        let run = async (o,prev,tick=1) => {
+            let result = await o.operation(prev);
+            if(o.tag) this.state.setState(o.tag,result);
+            if(typeof o.repeat === 'number') { //repeats a call with the first result
+                let i = tick;
+                while(i < o.repeat) {
+                    if(o.delay) {
+                        setTimeout(async ()=> {
+                            if(o.frame) {
+                                requestAnimationFrame(async ()=>{
+                                    i++;
+                                    await run(o,prev,i);
+                                });
+                            }
+                            else {
+                                i++
+                                await run(o,prev,i);
+                            }
+                        }, o.delay);
+                        break;
+                    }
+                    else result = await o.operation(prev);
+                    i++;
+                }
+                if(i === o.repeat && o.next) await this.runSequenceLayer(o.next,result);
+            } else if (typeof o.recursive === 'number') { //repeats a call but passes new results back in
+                let i = tick;
+                while(i < o.recursive) {
+                    if(o.delay) {
+                        setTimeout(async ()=> {
+                            if(o.frame) {
+                                requestAnimationFrame(async ()=>{
+                                    i++;
+                                    await run(o,result,i);
+                                });
+                            }
+                            else {
+                                i++
+                                await run(o,result,i);
+                            }
+                        }, o.delay);
+                        break;
+                    }
+                    else result = await o.operation(prev);
+                    i++;
+                }
+                if(i === o.recursive && o.next) await this.runSequenceLayer(o.next,result);
+            }
+            else if(o.next) await this.runSequenceLayer(o.next,result);
+        }
+
+
         if(typeof layer === 'function') { await layer(previousResult); } //can set functionsi in the .next position
         else if (typeof layer === 'string') { this.runSequence(layer,previousResult); } //can set sequences in the .next position by name
         else if (Array.isArray(layer)) {
@@ -162,18 +215,14 @@ class Sequencer {
                     if (o.frame && typeof requestAnimationFrame === 'function') { //or frame-timed operations
                         setTimeout(async ()=> {
                             requestAnimationFrame(async ()=>{
-                                let result = await o.operation(previousResult);
-                                if(o.tag) this.state.setState(o.tag,result);
-                                if(o.next) await this.runSequenceLayer(o.next,result);
+                                run(o,previousResult);
                             });
                         }, o.delay)
                     }
                     else {
                         setTimeout(
                             async () => {
-                                let result = await o.operation(previousResult);
-                                if(o.tag) this.state.setState(o.tag,result);
-                                if(o.next) await this.runSequenceLayer(o.next,result);
+                                run(o,previousResult);
                             },
                             o.delay
                         );
@@ -182,22 +231,16 @@ class Sequencer {
                 else {
                     if (o.frame) {
                         requestAnimationFrame(async ()=>{
-                            let result = await o.operation(previousResult);
-                            if(o.tag) this.state.setState(o.tag,result);
-                            if(o.next) await this.runSequenceLayer(o.next,result);
+                            run(o,previousResult);
                         });
                     }
                     else {
-                        let result = await o.operation(previousResult);
-                        if(o.tag) this.state.setState(o.tag,result);
-                        if(o.next) await this.runSequenceLayer(o.next,result);
+                        run(o,previousResult);
                     }
                 }
             };
         } else if (typeof layer === 'object') {
-            let result = await layer.operation(previousResult);
-            if(layer.tag) this.state.setState(layer.tag,result);
-            if(layer.next) await this.runSequenceLayer(layer.next,result);
+            run(layer,previousResult);
         }
     }
 
@@ -251,6 +294,7 @@ let sequence2 = {
                 console.log('b',input);
                 return 7;
             },
+            repeat:3,
             next:'a'
         },
     ]
