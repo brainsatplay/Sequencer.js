@@ -56,7 +56,9 @@ sequencer.addSequence('b',sequence2);
 
 sequencer.runSequence('b',4);
 ```
-```
+
+```js
+
 let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a triggered function on result
 //You could even, say, subscribe one tagged sequence to another tagged sequence.
 
