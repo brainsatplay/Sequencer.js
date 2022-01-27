@@ -84,7 +84,7 @@ sequencer.appendSequence( // or .append
     setting={ //object or function, functions cannot have more layers added
     //operation:(result) => {} //callback for the sequence, takes the previous result
     //delay:undefined, //set to a millisecond value
-    //frame:undefined //setframe:true depending on if you want frame-timed async (which also won't run if you are out of the 
+    //frame:undefined //setframe:true depending on if you want frame-timed async (which won't run if you are outside of the browser context)
     //tag:'xyz', //make subscribable outputs on this layer
     //repeat:3 //recursive:3 //repeater or recursive repeater. Recursion passes this layer's output back in rather than the parent layer
     tab)
