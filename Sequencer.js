@@ -66,10 +66,14 @@ export class Sequencer {
                 let idx = undefined;
                 let triggers = this.triggers[key]
                 if (triggers){
-                    let obj = triggers.find((o)=>{
-                        if(o.idx===sub) {return true;}
-                    });
-                    if(obj) triggers.splice(idx,1);
+                    if(!sub) delete this.triggers[key];
+                    else {
+                        let obj = triggers.find((o)=>{
+                            if(o.idx===sub) {return true;}
+                        });
+                        if(obj) triggers.splice(idx,1);
+                        return true;
+                    }
                 }
             },
             subscribeTriggerOnce(key=undefined,onchange=(value)=>{}) {

@@ -22,9 +22,10 @@ let sequence1 = [
     async (input) => {console.log('a',input); return 3;} //should log 2
 ];
 
-sequencer.addSequence('a',sequence1);
+sequencer.addSequence('a',sequence1); //or .add
 
-sequencer.runSequence('a', 0); //these run async
+sequencer.runSequence('a', 0); //or .run 
+//these run async
 
 //complex
 let sequence2 = { //create a sequence object or array, can mix and match for each layer as well
@@ -59,23 +60,23 @@ sequencer.runSequence('b',4);
 
 ```js
 
-let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a triggered function on result
+let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //or .subscribe //adds a triggered function on result
 //You could even, say, subscribe one tagged sequence to another tagged sequence.
 
-//sequencer.unsubscribeFromOperation('anotheroperation',sub); //leave sub blank to remove all triggers. 
+sequencer.unsubscribeFromOperation('anotheroperation',sub); //or .unsubscribe //leave sub blank to remove all triggers. 
 
 ```
 
 Other functions less obvious to use:
 
 ```js
-sequencer.getSequence(
+sequencer.getSequence( //or .get
     name,
     layer //optional
 );
 ```
 ```js
-sequencer.appendSequence(
+sequencer.appendSequence( // or .append
      name, //name of sequence
     layer, //layer 2 is the second layer, etc. leave blank to append on first layer
     setting={ //object or function, functions cannot have more layers added
@@ -87,7 +88,7 @@ sequencer.appendSequence(
 )
 ```
 ```js
-sequencer.removeSequence(
+sequencer.removeSequence( //or .remove
     name,
     layer, //optional
     index //optional
