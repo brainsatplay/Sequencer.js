@@ -5,8 +5,9 @@ Quick and dirty script sequencer. Create function trees, add async/requestAnimat
 `npm i anothersequencer`
 
 Usage:
-```
-import {Sequencer} from 'anothersequencer'
+
+```js
+import {Sequencer} from 'anothersequencer' //or copy the html
 //import {Sequencer} from './Sequencer.js'
 //in HTML: <script type='module' src='./Sequencer.js></script>
 //or for lazy: 
@@ -43,7 +44,7 @@ let sequence2 = [{
     }]
 }];
 
-let sequence3 = { //can use objects for sequences instad of arrays
+let sequence3 = { //can use objects for sequences instead of arrays
     tag:'a',
     operation:(input)=>{}, //the callback
     next:{ //objects instead of arrays
@@ -78,13 +79,13 @@ let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a 
 
 Other functions less obvious to use:
 
-```
+```js
 sequencer.getSequence(
     name,
     layer //optional
 );
 ```
-```
+```js
 sequencer.appendSequence(
      name, //name of sequence
     layer, //layer 2 is the second layer, etc. leave blank to append on first layer
@@ -96,17 +97,17 @@ sequencer.appendSequence(
     index //if you are appending to .next of an operation in a particular sequence layer you can use  this. Leave blank to just add the setting to the specified layer instead
 )
 ```
-```
+```js
 sequencer.removeSequence(
     name,
     layer, //optional
     index //optional
 );
 ```
-```
+```js
 //this is used recursively by runSequence otherwise to iterate a layer
 sequencer.runSequenceLayer(
-    layer=[],
+    layer,
     previousResult
 )
 ```
