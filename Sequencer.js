@@ -125,6 +125,7 @@ export class Sequencer {
     ) {
         let sequence = this.getSequence(name,layer);
         if(sequence) {
+            if(!Array.isArray(sequence)) sequence = [sequence]; //make the sequence layer an array if it isn't
             if(!index) sequence.push(setting);
             else {
                 if(!sequence[index]?.next) sequence.next = [];
@@ -289,8 +290,7 @@ export class Sequencer {
 
     unsubscribeFromOperation(tag, sub) {
         if(tag) {
-            if(sub) this.state.unsubscribeTrigger(tag,sub);
-            else this.state.unsubscribeAllTriggers(tag);
+           this.state.unsubscribeTrigger(tag,sub);
         }
     }
 
