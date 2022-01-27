@@ -16,9 +16,9 @@ let sequencer = new Sequencer();
 
 //simple
 let sequence1 = [
-    first(){console.log('1'); return 2;},
-    second(input){console.log(input); return 3;}, //should log "2"
-    async (input) => {console.log(input)} //yeah whatever
+    (input){console.log('1'); return 2;},
+    (input){console.log(input); return 3;}, //should log "2"
+    (input) => {console.log(input)} //yeah whatever
 ];
 
 //complex
@@ -28,29 +28,44 @@ let sequence2 = [{
     next:[{
         delay:100, //milisecond delay before this operation is called
         operation:(input)=>{}, //next callback
-        next:[
+        next:[ //functions on the next layer receive the previous layer's input and not each other's sequential input unlike the simpler sequence
             {
                 tag:'anotheroperation', //tags let you subscribe to these results
                 delay:100,
                 operation:async (input)=>{}, //etc
-                async:true //can toggle if the operations should run async, or use frame:true to use requestAnimationFrame
             }, 
             {
                 operation:async (input)=>{},
                 frame:true, //uses requestAnimationFrame which is a special async function for frame and context-limited calls
-                //next:[{...}]
+                next:'anothersequence' //can set 
             }
         ]
     }]
 }];
+
+let sequence3 = { //can use objects for sequences instad of arrays
+    tag:'a',
+    operation:(input)=>{}, //the callback
+    next:{ //objects instead of arrays
+        tag:'b',
+        operation:(input)=>{},
+        next:[{
+            tag:'c',
+            operation:(input)=>{},
+            next:(prev) => {} //could set a function as the final .next operation
+        }
+        ///,{...}
+      ]
+    }
+}
 
 let onResult = (input) => {
     console.log(input);
 }
 
 sequencer.addSequence('test1',sequence1);
-
 sequencer.addSequence('test2',sequence2);
+sequencer.addSequence('test3',sequence3);
 
 sequencer.runSequence('test1'); //can also tell it what layer to run from if there are multiple
 

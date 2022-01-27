@@ -1,34 +1,9 @@
-//Simple script sequencer
-// Joshua Brewster AGPL v3.0
-
-// sequencer.sequences = {
-//     a:[{
-//         operation:(input)=>{},
-//         next:[{
-//             operation:(input)=>{},
-//             next:[
-//                {
-//                  tag:'second_layer' //tags let you subscribe to these results
-//                  operation:async (input)=>{},
-//                  delay:100,
-//                  async:true //can toggle if the operations should run async
-//                }, 
-//                {
-//                  operation:async (input)=>{},
-//                  delay:100,
-//                  next:'anothersequence'
-//                },
-//                (lastResult) => {} //can input plain functions into the next sequence layers if you want just some simple one-off calls
-//             ]
-//          ]
-//     }],
-//     anothersequence:{
-//         //etc
-//     }
-// }
-
-
-export class Sequencer {
+<!DOCTYPE html>
+<head></head>
+<body>
+<script>
+    
+class Sequencer {
     constructor() {
         this.sequences = new Map();
         this.state = {
@@ -241,4 +216,47 @@ export class Sequencer {
 
 }
 
-export default Sequencer
+let sequencer = new Sequencer();
+
+let sequence1 = [
+    (input)=>{console.log('a',input); return 1;},
+    (input)=>{console.log('a',input); return 2;}, //should log "2"
+    async (input) => {console.log('a',input); return 3;} //yeah whatever
+];
+
+sequencer.addSequence('a',sequence1);
+
+sequencer.runSequence('a', 0);
+
+let sequence2 = {
+    operation:(input)=>{
+        console.log('b',input);
+        return 5;
+    },
+    next:[
+        {
+            operation:(input)=>{
+                console.log('b',input);
+                return 6;
+            },
+            next:(input)=>{console.log('b',input);}
+        },
+        {
+            delay:1000,
+            operation:(input)=>{
+                console.log('b',input);
+                return 7;
+            },
+            next:'a'
+        },
+    ]
+}
+
+sequencer.addSequence('b',sequence2);
+
+sequencer.runSequence('b',4);
+
+</script>
+
+
+</body>
