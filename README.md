@@ -84,7 +84,10 @@ sequencer.appendSequence( // or .append
     setting={ //object or function, functions cannot have more layers added
     //operation:(result) => {} //callback for the sequence, takes the previous result
     //delay:undefined, //set to a millisecond value
-    //async:undefined //set async:true or frame:true depending on if you want normal async or frame-timed async (which also won't run if you are out of the tab)
+    //frame:undefined //setframe:true depending on if you want frame-timed async (which also won't run if you are out of the 
+    //tag:'xyz', //make subscribable outputs on this layer
+    //repeat:3 //recursive:3 //repeater or recursive repeater. Recursion passes this layer's output back in rather than the parent layer
+    tab)
     }, 
     index //if you are appending to .next of an operation in a particular sequence layer you can use  this. Leave blank to just add the setting to the specified layer instead
 )
