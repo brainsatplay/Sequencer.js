@@ -15,61 +15,48 @@ import {Sequencer} from 'anothersequencer' //or copy the html
 
 let sequencer = new Sequencer();
 
-//simple
-let sequence1 = [
-    (input){console.log('1'); return 2;},
-    (input){console.log(input); return 3;}, //should log "2"
-    (input) => {console.log(input)} //yeah whatever
+//simple sequences will pass the previous result along in the order of the array
+let sequence1 = [ 
+    (input)=>{console.log('a',input); return 1;},
+    (input)=>{console.log('a',input); return 2;}, //should log 1
+    async (input) => {console.log('a',input); return 3;} //should log 2
 ];
 
+sequencer.addSequence('a',sequence1);
+
+sequencer.runSequence('a', 0); //these run async
+
 //complex
-let sequence2 = [{
-    tag:'begin',
-    operation:(input)=>{}, //the callback
-    next:[{
-        delay:100, //milisecond delay before this operation is called
-        operation:(input)=>{}, //next callback
-        next:[ //functions on the next layer receive the previous layer's input and not each other's sequential input unlike the simpler sequence
-            {
-                tag:'anotheroperation', //tags let you subscribe to these results
-                delay:100,
-                operation:async (input)=>{}, //etc
-            }, 
-            {
-                operation:async (input)=>{},
-                frame:true, //uses requestAnimationFrame which is a special async function for frame and context-limited calls
-                next:'anothersequence' //can set 
-            }
-        ]
-    }]
-}];
-
-let sequence3 = { //can use objects for sequences instead of arrays
-    tag:'a',
-    operation:(input)=>{}, //the callback
-    next:{ //objects instead of arrays
-        tag:'b',
-        operation:(input)=>{},
-        next:[{
-            tag:'c',
-            operation:(input)=>{},
-            next:(prev) => {} //could set a function as the final .next operation
+let sequence2 = { //create a sequence object or array, can mix and match for each layer as well
+    operation:(input)=>{
+        console.log('b',input);
+        return 5;
+    },
+    next:[ //Calls here receive the parent result.
+        {
+            operation:(input)=>{
+                console.log('b',input);
+                return 6;
+            },
+            frame:true // can execute with requestAnimationFrame
+            next:async (input)=>{console.log('b',input);} //can end with a function
+        },
+        {
+            delay:1000, //ms delay for this call
+            operation:(input)=>{
+                console.log('b',input);
+                return 7;
+            },
+            next:'a' //or can end with another sequence tag
         }
-        ///,{...}
-      ]
-    }
+    ]
 }
 
-let onResult = (input) => {
-    console.log(input);
-}
+sequencer.addSequence('b',sequence2);
 
-sequencer.addSequence('test1',sequence1);
-sequencer.addSequence('test2',sequence2);
-sequencer.addSequence('test3',sequence3);
-
-sequencer.runSequence('test1'); //can also tell it what layer to run from if there are multiple
-
+sequencer.runSequence('b',4);
+```
+```
 let sub = sequencer.subscribeToOperation('anotheroperation',onResult); //adds a triggered function on result
 //You could even, say, subscribe one tagged sequence to another tagged sequence.
 
