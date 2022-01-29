@@ -4,7 +4,7 @@
 // or propagate to children/parents with utility calls that get added to the objects
 
 /*
-let tree = {
+let tree = { //top level should be an object, children can be arrays of objects
     tag:'top',
     operator:(input,node,origin)=>{}, //input is the previous result if passed from another node. node is 'this' node, origin is the previous node if passed
     forward:true, //forward prop: returned outputs from the operator are passed to children operator(s)
