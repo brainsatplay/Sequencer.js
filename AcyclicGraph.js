@@ -1,6 +1,6 @@
 //just a more typical hierarchical graph tree with back and forward prop and arbitrary 
 // go-here-do-that utilities. Create an object node tree and make it do... things 
-// same setup as sequencer but object only, and can add arbitrary properties to mutate on objects
+// same setup as sequencer but object/array/tag only (no functions), and can add arbitrary properties to mutate on objects
 // or propagate to children/parents with utility calls that get added to the objects
 
 /*
@@ -127,26 +127,37 @@ export class AcyclicGraph {
     async runNode(node,input,origin) {
         if(typeof node === 'string') node = this.nodes.get(key);
         if(node) {
-            let res = await node.runOp(input,node,origin);
-            if(typeof node.repeat === 'number') {
-                let i = 1;
-                while(i < node.repeat) {
-                    await node.runOp(input,node,origin);
-                    i++;
+            let run = (n) => {
+                let res = await n.runOp(input,n,origin);
+                if(typeof n.repeat === 'number') {
+                    let i = 1;
+                    while(i < n.repeat) {
+                        await n.runOp(input,n,origin);
+                        i++;
+                    }
+                } else if(typeof n.recursive === 'number') {
+                    let i = 1;
+                    while(i < n.recursive) {
+                        res = await n.runOp(res,n,origin);
+                        i++;
+                    }
                 }
-            } else if(typeof node.recursive === 'number') {
-                let i = 1;
-                while(i < node.recursive) {
-                    res = await node.runOp(res,node,origin);
-                    i++;
+                if(n.backward && n.parent) {
+                    await n.callParent(res);
+                }
+                if(n.children && n.forward) {
+                    await n.callChildren(res);
                 }
             }
-            if(node.backward && node.parent) {
-                await node.callParent(res);
+
+            if(node.delay) {
+                setTimeout(()=>{
+                    run(node);
+                },node.delay);
+            } else if (node.frame && requestAnimationFrame) {
+                requestAnimationFrame(()=>{run(node)});
             }
-            if(node.children && node.forward) {
-                await node.callChildren(res);
-            }
+            else run(node);
         }
         return res;
     }
