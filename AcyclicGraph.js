@@ -16,8 +16,9 @@ Each node comes with an 'operator' main function to handle input and output with
 Tagged nodes are indexed as callable entry points to the tree.
 Node operations return results via a promise as well as propagating based on available default object settings. All else is built into the custom main 'operator()' functions you add
 
-The 'operator()' function in each node is a program for that node that passes an input, the node, and the origin node if it's passing the input.
-This is like a 'main()' program where the node is the script's scope with local properties
+The 'operator()' function in each node is a program for that node that passes an input, the node, and the origin node if it's passing the input. 
+It can and should return results which can be used for propagation to other nodes automatically or for returning results from a chain of operations 
+starting with the called node. This is like a 'main()' program in a file where the node is the script's scope with local properties
 
 Tagged node operation results can also be subscribed to with via an internal state manager from anywhere in your program so you don't need to add more lines to operators to output to certain places.
 */
