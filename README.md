@@ -62,7 +62,9 @@ sequencer.runSequence('b',4);
 
 ```js
 
-let sub = sequencer.subscribeToOperation('repeater',onResult); //or .subscribe //adds a triggered function on result
+
+//add a triggered function on result
+sequencer.subscribe('repeater',(res)=>{console.log('subscribed',res)});
 //You could even, say, subscribe one tagged sequence to another tagged sequence.
 
 sequencer.unsubscribeFromOperation('repeater',sub); //or .unsubscribe //leave sub blank to remove all triggers. 

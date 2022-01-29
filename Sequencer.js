@@ -34,7 +34,8 @@ export class Sequencer {
         this.state = {
             pushToState:{},
             data:{},
-            setState:(updateObj)=>{
+            triggers:{},
+            setState(updateObj){
                 Object.assign(this.pushToState,updateObj);
         
                 if(Object.keys(this.triggers).length > 0) {
@@ -52,7 +53,7 @@ export class Sequencer {
 
                 return this.pushToState;
             },
-            subscribeTrigger:(key,onchange=(res)=>{})=>{
+            subscribeTrigger(key,onchange=(res)=>{}){
                 if(key) {
                     if(!this.triggers[key]) {
                         this.triggers[key] = [];
@@ -62,7 +63,7 @@ export class Sequencer {
                     return this.triggers[key].length-1;
                 } else return undefined;
             },
-            unsubscribeTrigger:(key,sub)=>{
+            unsubscribeTrigger(key,sub){
                 let idx = undefined;
                 let triggers = this.triggers[key]
                 if (triggers){
@@ -88,13 +89,13 @@ export class Sequencer {
         }
     }
 
-    addSequence(name, sequence=[]) {
+    add(name, sequence=[]) {
         this.sequences.set(name,sequence);
     }
 
-    add=this.addSequence
+    addSequence = this.add;
 
-    async runSequence(name, input, runFromLayer=1) {
+    async run(name, input, runFromLayer=1) {
         let sequence = this.sequences.get(name);
         if(sequence) {
             if(runFromLayer > 1) {
@@ -111,7 +112,7 @@ export class Sequencer {
         }
     }
 
-    run = this.runSequence;
+    runSequence = this.run;
 
     appendSequence(
         name, //name of sequence
@@ -189,7 +190,7 @@ export class Sequencer {
             else return prev;
 
             let result = await o.operation(prev);
-            if(o.tag) this.state.setState(o.tag,result);
+            if(o.tag) this.state.setState({[o.tag]:result});
             if(typeof o.repeat === 'number') { //repeats a call with the first result
                 let i = tick;
                 while(i < o.repeat) {
@@ -281,21 +282,22 @@ export class Sequencer {
     }
 
     //subscribes to a tagged operation
-    subscribeToOperation(tag,callback=(result)=>{}) {
+    subscribe(tag,callback=(result)=>{}) {
         if(tag)
             return this.state.subscribeTrigger(tag,callback);
     }
 
-    subscribe = this.subscribeToOperation;
+    subscribeToOperation = this.subscribe;
 
-    unsubscribeFromOperation(tag, sub) {
+    unsubscribe(tag, sub) {
         if(tag) {
-           this.state.unsubscribeTrigger(tag,sub);
+            this.state.unsubscribeTrigger(tag,sub);
         }
     }
 
-    unsubscribe = this.unsubscribeFromOperation;
+    unsubscribeFromOperation = this.unsubscribe;
 
 }
+
 
 export default Sequencer
