@@ -136,40 +136,84 @@ export class AcyclicGraph {
 
     async runNode(node,input,origin) {
         if(typeof node === 'string') node = this.nodes.get(key);
-        if(node) {
-            let run = (n) => {
-                let res = await n.runOp(input,n,origin);
-                if(typeof n.repeat === 'number') {
-                    let i = 1;
-                    while(i < n.repeat) {
-                        await n.runOp(input,n,origin);
-                        i++;
-                    }
-                } else if(typeof n.recursive === 'number') {
-                    let i = 1;
-                    while(i < n.recursive) {
-                        res = await n.runOp(res,n,origin);
-                        i++;
-                    }
-                }
-                if(n.backward && n.parent) {
-                    await n.callParent(res);
-                }
-                if(n.children && n.forward) {
-                    await n.callChildren(res);
-                }
-            }
 
-            if(node.delay) {
-                setTimeout(()=>{
-                    run(node);
-                },node.delay);
-            } else if (node.frame && requestAnimationFrame) {
-                requestAnimationFrame(()=>{run(node)});
+        return new Promise((resolve) => {
+            if(node) {
+                let run = async (node, inp, tick=1) => {
+                    return new Promise ((r) => {
+                        let res = await node.runOp(inp,node,origin);
+                        if(typeof node.repeat === 'number') {
+                            while(tick < node.repeat) {
+                                if(node.delay) {
+                                    setTimeout(async ()=>{
+                                        res = await node.runOp(inp,node,origin);
+                                        tick++;
+                                        if(tick < node.repeat) {
+                                            run(node,inp,tick);
+                                        } else r(res);
+                                    },node.delay);
+                                    break;
+                                } else if (node.frame && requestAnimationFrame) {
+                                    requestAnimationFrame(async ()=>{
+                                        res = await node.runOp(inp,node,origin);
+                                        tick++;
+                                        if(tick < node.repeat) {
+                                            run(node,inp,tick);
+                                        } else r(res);
+                                    });
+                                    break;
+                                }
+                                else res = await node.runOp(inp,node,origin);
+                                tick++;
+                            }
+                            if(tick === node.repeat) r(res);
+                        } else if(typeof node.recursive === 'number') {
+                            
+                            while(tick < node.recursive) {
+                                if(node.delay) {
+                                    setTimeout(async ()=>{
+                                        res = await node.runOp(inp,node,origin);
+                                        tick++;
+                                        if(tick < node.repeat) {
+                                            run(node,res,tick);
+                                        } else r(res);
+                                    },
+                                        node.delay);
+                                    break;
+                                } else if (node.frame && requestAnimationFrame) {
+                                    requestAnimationFrame(async ()=>{
+                                        res = await node.runOp(inp,node,origin);
+                                        tick++;
+                                        if(tick < node.repeat) {
+                                            run(node,res,tick);
+                                        } else r(res);
+                                    });
+                                    break;
+                                }
+                                else res = await node.runOp(res,node,origin);
+                                tick++;
+                            }
+                            if(tick === node.repeat) r(res);
+                        }
+                        else {
+                            r(res);
+                        }
+                    })
+                }
+
+                let res = await run(node,input);
+
+                if(node.backward && node.parent) {
+                    await node.callParent(res);
+                }
+                if(node.children && node.forward) {
+                    await node.callChildren(res);
+                }
+
+                resolve(res);
             }
-            else run(node);
-        }
-        return res;
+            resolve(undefined);
+        });
     }
 
 
