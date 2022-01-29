@@ -198,10 +198,10 @@ export class AcyclicGraph {
                         else {
                             r(res);
                         }
-                    })
+                    });
                 }
 
-                let res = await run(node,input);
+                let res = await run(node,input); //repeat/recurse before moving on to the parent/child
 
                 if(node.backward && node.parent) {
                     await node.callParent(res);
