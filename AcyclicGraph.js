@@ -180,7 +180,7 @@ export class AcyclicGraph {
                                         res = await node.runOp(inp,node,origin);
                                         tick++;
                                         if(tick < node.repeat) {
-                                            run(node,inp,tick);
+                                            await run(node,inp,tick);
                                         } else r(res);
                                     },node.delay);
                                     break;
@@ -189,7 +189,7 @@ export class AcyclicGraph {
                                         res = await node.runOp(inp,node,origin);
                                         tick++;
                                         if(tick < node.repeat) {
-                                            run(node,inp,tick);
+                                            await run(node,inp,tick);
                                         } else r(res);
                                     });
                                     break;
@@ -206,7 +206,7 @@ export class AcyclicGraph {
                                         res = await node.runOp(inp,node,origin);
                                         tick++;
                                         if(tick < node.recursive) {
-                                            run(node,res,tick);
+                                            await run(node,res,tick);
                                         } else r(res);
                                     },
                                         node.delay);
@@ -216,7 +216,7 @@ export class AcyclicGraph {
                                         res = await node.runOp(inp,node,origin);
                                         tick++;
                                         if(tick < node.recursive) {
-                                            run(node,res,tick);
+                                            await run(node,res,tick);
                                         } else r(res);
                                     });
                                     break;
