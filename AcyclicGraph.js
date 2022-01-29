@@ -16,7 +16,10 @@ let tree = {
         tag:'next', //tagged nodes get added to the node map by name, they must be unique! non-tagged nodes are only referenced internally e.g. in call trees
         operator:(input,node,origin)=>{}, // if you use a normal function operator(input,node,origin){} then you can use 'this' reference instead of 'node', while 'node' is more flexible for arrow functions etc.
         //etc..
-    }
+    }//,
+    //delay:1000//, //can timeout the operation
+    //frame:true //can have the operation run via requestAnimationFrame (throttling)
+    //repeat:3 //can repeat an operator, or use "recursive" for the same but passing the node's result back in
 };
 
 
