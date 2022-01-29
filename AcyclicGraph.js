@@ -241,7 +241,7 @@ export class AcyclicGraph {
                     await node.callChildren(res);
                 }     
                 
-                //you could return an object {} from the parent node operation that is mutated by the parents or children before resolving the promise,
+                //you could return an object {} kept as a node property from the parent node operation, one that is mutated by the parents or children before resolving the promise,
                 // thus reporting results from chained operations
 
                 resolve(res);
