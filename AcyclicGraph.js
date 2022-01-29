@@ -4,9 +4,33 @@
 // or propagate to children/parents with utility calls that get added to the objects
 
 /*
+Design Philosophy:
+
+Acyclic graphs are trees of operations with arbitrary entry and exit points plus arbitrary propagation of results through the tree.
+
+Each node is an object with a few required properties and functions and then anything else you want to add as variables, reference, utility functions etc. 
+Nodes added to the graph tree are made into a 'graphnode' class object with some added utility functions added to allow generic message passing between parent/child/any nodes.
+There are additional properties to indicate whether to delay (or render on frame), repeat or recurse, and do automatic forward or backprop based on the tree hierarchy.
+
+Each node comes with an 'operator' main function to handle input and output with arbitrary conditions. 
+Tagged nodes are indexed as callable entry points to the tree.
+Node operations return results via a promise as well as propagating based on available default object settings. All else is built into the custom main 'operator()' functions you add
+
+The 'operator()' function in each node is a program for that node that passes an input, the node, and the origin node if it's passing the input.
+This is like a 'main()' program where the node is the script's scope with local properties
+
+Tagged node operation results can also be subscribed to with via an internal state manager from anywhere in your program so you don't need to add more lines to operators to output to certain places.
+*/
+
+
+/*
 let tree = { //top level should be an object, children can be arrays of objects
     tag:'top',
-    operator:(input,node,origin)=>{}, //input is the previous result if passed from another node. node is 'this' node, origin is the previous node if passed
+    operator(input,node,origin){ //if arrow function, use node as the 'this' reference
+        if(typeof input === 'object')) {
+            if(input.x) this.x = input.x;
+         }
+    }, //input is the previous result if passed from another node. node is 'this' node, origin is the previous node if passed
     forward:true, //forward prop: returned outputs from the operator are passed to children operator(s)
     //backward:true, //backprop: returned outputs from the operator are passed to the parent operator
     x:3, //arbitrary properties available on the node variable in the operator 
@@ -14,7 +38,7 @@ let tree = { //top level should be an object, children can be arrays of objects
     z:1,
     children:{ //object, array, or tag. Same as the 'next' tag in Sequencer.js
         tag:'next', //tagged nodes get added to the node map by name, they must be unique! non-tagged nodes are only referenced internally e.g. in call trees
-        operator:(input,node,origin)=>{}, // if you use a normal function operator(input,node,origin){} then you can use 'this' reference instead of 'node', while 'node' is more flexible for arrow functions etc.
+        operator:(input,node,origin)=>{}, // if you use a normal function operator(input,node,origin){} then you can use 'this' reference instead of 'node', while arrow functions using a different scope still have a local reference.
         //etc..
     }//,
     //delay:1000//, //can timeout the operation
@@ -26,7 +50,7 @@ let tree = { //top level should be an object, children can be arrays of objects
 let graph = new AcyclicGraph();
 graph.addNode(tree);
 
-graph.run
+graph.run('top',{x:1});
 
 each node in the tree becomes a graphnode object
 
