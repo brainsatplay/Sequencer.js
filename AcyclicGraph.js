@@ -19,6 +19,12 @@ let tree = {
     }
 };
 
+
+let graph = new AcyclicGraph();
+graph.addNode(tree);
+
+graph.run
+
 each node in the tree becomes a graphnode object
 
 */
@@ -106,6 +112,7 @@ export class AcyclicGraph {
     }
 
     addNode(node={}) {
+        if(!node.tag) node.tag = `top${Math.floor(Math.random()*10000000)}`; //add a random id for the top index if none supplied
         let tree = new graphnode(node,undefined,this);
         this.convertToNodes(tree);
         this.nodes.set(tree.tag,tree);
