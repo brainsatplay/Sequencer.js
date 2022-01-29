@@ -30,6 +30,7 @@ let tree = { //top level should be an object, children can be arrays of objects
         if(typeof input === 'object')) {
             if(input.x) this.x = input.x;
          }
+         return input;
     }, //input is the previous result if passed from another node. node is 'this' node, origin is the previous node if passed
     forward:true, //forward prop: returned outputs from the operator are passed to children operator(s)
     //backward:true, //backprop: returned outputs from the operator are passed to the parent operator
@@ -38,7 +39,10 @@ let tree = { //top level should be an object, children can be arrays of objects
     z:1,
     children:{ //object, array, or tag. Same as the 'next' tag in Sequencer.js
         tag:'next', //tagged nodes get added to the node map by name, they must be unique! non-tagged nodes are only referenced internally e.g. in call trees
-        operator:(input,node,origin)=>{}, // if you use a normal function operator(input,node,origin){} then you can use 'this' reference instead of 'node', while arrow functions using a different scope still have a local reference.
+        operator:(input,node,origin)=>{ //arrow function in this scope means it preserves the parent scope if the parent scope is not an arrow
+            if(origin.x) node.x = origin.x; //e.g. propagating coordinates down a tree (e.g. in a hierarchical 3D model)
+            return input;
+        }, // if you use a normal function operator(input,node,origin){} then you can use 'this' reference instead of 'node', while arrow functions using a different scope still have a local reference.
         //etc..
     }//,
     //delay:1000//, //can timeout the operation
