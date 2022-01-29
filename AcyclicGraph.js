@@ -174,7 +174,7 @@ export class AcyclicGraph {
                                     setTimeout(async ()=>{
                                         res = await node.runOp(inp,node,origin);
                                         tick++;
-                                        if(tick < node.repeat) {
+                                        if(tick < node.recursive) {
                                             run(node,res,tick);
                                         } else r(res);
                                     },
@@ -184,7 +184,7 @@ export class AcyclicGraph {
                                     requestAnimationFrame(async ()=>{
                                         res = await node.runOp(inp,node,origin);
                                         tick++;
-                                        if(tick < node.repeat) {
+                                        if(tick < node.recursive) {
                                             run(node,res,tick);
                                         } else r(res);
                                     });
@@ -193,7 +193,7 @@ export class AcyclicGraph {
                                 else res = await node.runOp(res,node,origin);
                                 tick++;
                             }
-                            if(tick === node.repeat) r(res);
+                            if(tick === node.recursive) r(res);
                         }
                         else {
                             r(res);
