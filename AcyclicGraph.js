@@ -3,6 +3,8 @@
 // same setup as sequencer but object/array/tag only (no functions), and can add arbitrary properties to mutate on objects
 // or propagate to children/parents with utility calls that get added to the objects
 
+//Also, untested
+
 /*
 Design Philosophy:
 
@@ -237,7 +239,10 @@ export class AcyclicGraph {
                 }
                 if(node.children && node.forward) {
                     await node.callChildren(res);
-                }
+                }     
+                
+                //you could return an object {} from the parent node operation that is mutated by the parents or children before resolving the promise,
+                // thus reporting results from chained operations
 
                 resolve(res);
             }
