@@ -4,7 +4,7 @@ Quick and dirty script sequencer. Create function trees, add async/requestAnimat
 
 `npm i anothersequencer`
 
-For a DAG Node sequencer with promise-returning sequences: [AcyclicGraph.js](https://github.com/brainsatplay/acyclicgraph)
+For a DAG Node sequencer with promise-returning sequences: [AcyclicGraph.js](https://github.com/brainsatplay/acyclicgraph.js)
 
 Usage:
 
