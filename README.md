@@ -1,13 +1,14 @@
 ## Javascript function sequencing
 
-Quick and dirty script sequencer. Create function trees, add async/requestAnimationFrame or delays, and subscribe to tagged outputs in the trees.
+Quick and dirty script sequencer. Create function trees, add async/requestAnimationFrame or delays, and subscribe to tagged outputs in the trees. 
 
+Sequences are created from basic javascript structures with some required and optional variables as specified below, so it's visually/syntactically as intuitive and efficient as possible to write once you get the hang of it (hopefully).
+ 
 `npm i anothersequencer`
 
-For a DAG Node sequencer with promise-returning sequences: [AcyclicGraph.js](https://github.com/brainsatplay/acyclicgraph.js)
+For a similarly structured but more technical Acyclic Graph Node sequencer (i.e. trees and forests) with promise-returning sequences and forward/backprop + more simple hierarchical programming utilities: [AcyclicGraph.js](https://github.com/brainsatplay/acyclicgraph.js)
 
-Usage:
-
+### Usage:
 ```js
 import {Sequencer} from 'anothersequencer' //or copy the html
 //import {Sequencer} from './Sequencer.js'
@@ -111,3 +112,4 @@ sequencer.runSequenceLayer(
 )
 ```
 
+Joshua Brewster  ---   AGPL v3.0
