@@ -1,6 +1,6 @@
 {
   "name": "anothersequencer",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Simple script tree sequencer in javascript. Allows creating fairly complex trees of sync/async functions or requestAnimationFrame functions with optional delays, as well as subscribing to particular outputs in the tree at any time.",
   "main": "sequencer.js",
   "type":"module",
