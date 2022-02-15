@@ -1,5 +1,10 @@
 ## Javascript function sequencing
 
+![status](https://img.shields.io/npm/v/anothersequencer.svg) 
+![downloads](https://img.shields.io/npm/dt/anothersequencer.svg)
+![size](https://img.shields.io/github/size/brainsatplay/Sequencer.js/Sequencer.js)
+![l](https://img.shields.io/npm/l/anothersequencer)
+
 Quick and dirty script sequencer. Create function trees, add async/requestAnimationFrame or delays, and subscribe to tagged outputs in the trees. 
 
 Sequences are created from basic javascript structures with some required and optional variables as specified below, so it's visually/syntactically as intuitive and efficient as possible to write once you get the hang of it (hopefully).
